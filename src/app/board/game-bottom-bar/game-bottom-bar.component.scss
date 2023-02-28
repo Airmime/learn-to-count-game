@@ -1,0 +1,58 @@
+.bloc {
+    font-family: 'Schoolbell', cursive !important;
+    text-align: center;
+    font-size: 2.3rem;
+    color: rgb(98, 76, 18);
+    font-weight: bold;
+    background-color: rgba(242, 193, 78, 1);
+    border-radius: 1rem;
+    margin: 1rem;
+    padding: 2rem;
+
+    @media (max-width: 1270px) {
+      font-size: 5vw;
+      padding: .5rem;
+      margin: 1rem;
+    }
+
+    &:first-of-type {
+        margin-left: 2rem;
+    }
+
+    .reccord{
+        font-size: 1.5rem;
+        color: rgba(98, 76, 18, .4);;
+    }
+
+    .one-more {
+        animation-name: thumb;
+        animation-duration: 1s;
+        animation-timing-function: linear;
+        animation-delay: 0s;
+        animation-iteration-count: infinite;
+        animation-direction: normal;
+    }
+
+    &.button {
+        background-color: rgba(var(--action-bg-color), 1);
+        color: rgb(96, 40, 40);
+
+        &:hover {
+            transform: translateY(0.5rem);
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 1rem 2rem rgba(var(--action-bg-color), 0.8);
+        }
+    }
+}
+
+@keyframes thumb {
+    0% {
+      transform: rotate(0deg) translate(0, 0);
+    }
+    50% {
+      transform: rotate(-30deg) translate(-5px, -10px);
+    }
+    100% {
+      transform: rotate(0deg) translate(0, 0);
+    }
+  }

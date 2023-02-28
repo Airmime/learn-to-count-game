@@ -1,10 +1,22 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
-  title = 'apprendre-a-compter';
+
+  constructor(translate: TranslateService) {
+
+    // Add languages available.
+    translate.addLangs(['en', 'fr']);
+    translate.setDefaultLang('en');
+
+    // Get browser language.
+    const browserLang = translate.getBrowserLang();
+    if (browserLang) {
+      translate.use(browserLang);
+    }
+  }
 }

@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+@import './assets/css/minstyle.io.css';
+@import './app/design-system/css/helpers.scss';
+
+:root, p, h1, h2, h3, h4{
+    font-family: 'Schoolbell', cursive !important;
+}
+
+p{
+    padding: 0;
+    margin: 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

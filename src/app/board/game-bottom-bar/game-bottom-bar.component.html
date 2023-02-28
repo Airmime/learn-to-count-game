@@ -1,0 +1,16 @@
+<div class="flex">
+    <div class="flex-auto">
+        <div class="bloc">
+            <div class="inline-block">{{score}} points </div>
+            <div class="inline-block ml-1" [ngClass]="{'one-more': oneMoreAnimation}"><fa-icon [icon]="thumbsUp"></fa-icon></div>
+            <div class="reccord">
+                Record : {{record}} points
+            </div>
+        </div>
+        
+    </div>
+
+    <button class="bloc button flex-auto new-game" (click)="newGame()">
+        <fa-icon [icon]="faCalculator"></fa-icon> {{ 'new-game' | translate }}
+    </button>
+</div>

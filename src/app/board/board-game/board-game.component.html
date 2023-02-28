@@ -1,0 +1,35 @@
+<div class="board-game">
+    <div class="infos flex content-between">
+
+        <!-- Weather -->
+        <div>
+            <app-weather></app-weather>
+        </div>
+
+        <!-- Date -->
+        <div>
+            <p>
+                {{ 'current-date' | translate }} {{ date | date:'EEEE d MMMM y':undefined:translate.currentLang}}
+            </p>
+        </div>
+    </div>
+
+    <!-- Game -->
+    <div class="numbers flex justify-content">
+        <div class="flex-auto">
+            {{ firstNumber }} + {{ secondNumber }} =
+        </div>
+
+        <div class="flex-auto">
+            <div [hidden]="success">
+                <input #resultInput type="number" [ngClass]="{'error': error}" id="resultInput" [(ngModel)]="result" (input)="checkResult()">
+            </div>
+            <div [hidden]="!success">
+                <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_dflqwg4a.json" background="transparent"  speed="1"  style="width: 100%;" loop autoplay></lottie-player>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Middle -->
+<div class="middle"></div>
