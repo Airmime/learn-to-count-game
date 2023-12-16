@@ -3,6 +3,7 @@ import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import { faCalculator } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 import { setScore } from '../../state-management/scoreState';
+import { setlevel } from "../../state-management/levelState";
 
 @Component({
   selector: 'app-game-bottom-bar',
@@ -16,8 +17,9 @@ export class GameBottomBarComponent implements OnInit {
   faCalculator = faCalculator;
   oneMoreAnimation: boolean = false;
   record: number | null = null;
+  levelValue!: number;
 
-  constructor(private store: Store<{ score: number }>) { }
+  constructor(private store: Store<{ score: number }>, private level: Store<{ level: number }>) { }
 
   ngOnInit(): void {
 
@@ -48,11 +50,19 @@ export class GameBottomBarComponent implements OnInit {
         }
       }
     });
+
+    // Subscribe and get level.
+    this.level.select('level').subscribe({
+      next: (level) => {
+        this.levelValue = level;
+      }
+    });
   }
 
   /**
    * Update the record.
    * If the score is higher than the record, update the record.
+   * @param currentScore The current score.
    */
   updateRecord(currentScore: number): void {
     if (localStorage.getItem('record')) {
@@ -69,5 +79,16 @@ export class GameBottomBarComponent implements OnInit {
   newGame(): void {
     this.score = 0;
     this.store.dispatch(setScore(0));
+  }
+
+  /**
+   * Update the level.
+   */
+  changeLevel(): void {
+    if (this.levelValue === 3) {
+      this.level.dispatch(setlevel(1));
+    }else {
+      this.level.dispatch(setlevel(this.levelValue + 1));
+    }
   }
 }

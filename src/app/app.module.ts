@@ -16,6 +16,7 @@ import { scoreReducer } from './state-management/scoreState';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { WeatherComponent } from './board/board-game/weather/weather.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { levelReducer } from "./state-management/levelState";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -40,6 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule,
     StoreModule.forRoot({}),
     StoreModule.forFeature('score', scoreReducer),
+    StoreModule.forFeature('level', levelReducer),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

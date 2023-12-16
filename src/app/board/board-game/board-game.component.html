@@ -16,11 +16,11 @@
 
     <!-- Game -->
     <div class="numbers flex justify-content">
-        <div class="flex-auto">
+        <div style="width: 60%">
             {{ firstNumber }} + {{ secondNumber }} =
         </div>
 
-        <div class="flex-auto">
+        <div style="width: 40%">
             <div [hidden]="success">
                 <input #resultInput type="number" [ngClass]="{'error': error}" id="resultInput" [(ngModel)]="result" (input)="checkResult()">
             </div>

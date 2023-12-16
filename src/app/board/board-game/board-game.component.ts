@@ -20,22 +20,27 @@ export class BoardGameComponent implements OnInit, AfterViewInit{
   score: number = 0;
   error: boolean = false;
   success: boolean = false;
+  levelValue!: number;
   @ViewChild('resultInput') resultInput: ElementRef | undefined;
 
-  constructor(private store: Store<{ score: number }>, public translate: TranslateService) {
+  constructor(
+    private store: Store<{ score: number }>,
+    public translate: TranslateService,
+    private level: Store<{ level: number }>) {
+
     if (translate.currentLang == 'fr') {
       registerLocaleData(localeFr, 'fr');
     }else {
       registerLocaleData(localeEn, 'en');
-    }    
+    }
   }
 
   ngAfterViewInit(): void {
     // Focus on the result input.
-    this.resultInput?.nativeElement.focus(); 
+    this.resultInput?.nativeElement.focus();
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     // Generate random numbers.
     this.generateNumbers();
 
@@ -45,14 +50,30 @@ export class BoardGameComponent implements OnInit, AfterViewInit{
         this.score = score;
       }
     });
+
+    this.level.select('level').subscribe({
+      next: (level) => {
+        this.levelValue = level;
+        this.generateNumbers();
+      }
+    });
   }
 
   /**
-   * Generate random numbers, between 1 to 10.
+   * Generate random numbers,
    */
   generateNumbers(): void {
-    this.firstNumber = Math.floor(Math.random() * 5) + 1;
-    this.secondNumber = Math.floor(Math.random() * 5) + 1;
+
+    let limit: number = 5;
+
+    if (this.levelValue === 2) {
+      limit = 10;
+    } else if (this.levelValue === 3) {
+      limit = 20;
+    }
+
+    this.firstNumber = Math.floor(Math.random() * limit) + 1;
+    this.secondNumber = Math.floor(Math.random() * limit) + 1;
     this.result = null;
   }
 
@@ -85,12 +106,12 @@ export class BoardGameComponent implements OnInit, AfterViewInit{
         setTimeout(() => {
           this.incrementScore();
           this.generateNumbers();
-          this.success = false;    
+          this.success = false;
         }, 1000);
 
         // Wait 1 second before focusing on the result input.
         setTimeout(() => {
-          this.resultInput?.nativeElement.focus();   
+          this.resultInput?.nativeElement.focus();
         }, 1000);
 
       } else {
@@ -98,7 +119,7 @@ export class BoardGameComponent implements OnInit, AfterViewInit{
 
         // Wait 750ms before removing the result.
         setTimeout(() => {
-          this.result = null;       
+          this.result = null;
         }, 750);
       }
     }

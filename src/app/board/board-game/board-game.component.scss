@@ -31,7 +31,7 @@
             justify-content: flex-start;
         }
     }
-    
+
     .numbers {
         text-align: right;
         font-family: 'Schoolbell', cursive !important;
@@ -39,10 +39,10 @@
         color: #fff;
         font-weight: bold;
         margin-top: 6rem;
-    
+
         /* Effet craie */
         text-shadow: 0 0 2rem rgba($color: #fff, $alpha: .1);
-    
+
         input {
             border: none;
             height: 100%;
@@ -54,7 +54,6 @@
             color: #fff;
             font-weight: bold;
             border-bottom: 10px solid #fff;
-            margin-left: 3rem;
 
             @media (max-width: 1270px) {
                 max-width: 90%;

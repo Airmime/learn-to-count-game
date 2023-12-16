@@ -7,10 +7,20 @@
                 Record : {{record}} points
             </div>
         </div>
-        
     </div>
 
     <button class="bloc button flex-auto new-game" (click)="newGame()">
         <fa-icon [icon]="faCalculator"></fa-icon> {{ 'new-game' | translate }}
     </button>
+
+  <div class="bloc level">
+    <div class="flex" style="align-items: center; justify-content: center; flex-direction: column" (click)="changeLevel()">
+      <div>
+        Difficulté
+      </div>
+      <div>
+        <span>{{ levelValue }}</span>
+      </div>
+    </div>
+  </div>
 </div>
