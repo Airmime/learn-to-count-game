@@ -4,6 +4,7 @@ import { faCalculator } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 import { setScore } from '../../state-management/scoreState';
 import { setlevel } from "../../state-management/levelState";
+import { ModeType, setMode } from "../../state-management/modeState";
 
 @Component({
   selector: 'app-game-bottom-bar',
@@ -18,8 +19,10 @@ export class GameBottomBarComponent implements OnInit {
   oneMoreAnimation: boolean = false;
   record: number | null = null;
   levelValue!: number;
+  modeValue: ModeType = 'addition';
 
-  constructor(private store: Store<{ score: number }>, private level: Store<{ level: number }>) { }
+  constructor(private store: Store<{ score: number }>, private level: Store<{ level: number }>, private mode: Store<{ mode: ModeType }>) {
+  }
 
   ngOnInit(): void {
 
@@ -57,6 +60,12 @@ export class GameBottomBarComponent implements OnInit {
         this.levelValue = level;
       }
     });
+
+    this.mode.select('mode').subscribe({
+      next: (mode) => {
+        this.modeValue = mode;
+      }
+    });
   }
 
   /**
@@ -89,6 +98,14 @@ export class GameBottomBarComponent implements OnInit {
       this.level.dispatch(setlevel(1));
     }else {
       this.level.dispatch(setlevel(this.levelValue + 1));
+    }
+  }
+
+  changeMode(): void {
+    if (this.modeValue === 'addition') {
+      this.mode.dispatch(setMode('subtraction'));
+    } else {
+      this.mode.dispatch(setMode('addition'));
     }
   }
 }

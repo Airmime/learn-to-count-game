@@ -5,6 +5,7 @@ import { registerLocaleData } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { setScore } from '../../state-management/scoreState';
 import { TranslateService } from '@ngx-translate/core';
+import { ModeType } from "../../state-management/modeState";
 
 @Component({
   selector: 'app-board-game',
@@ -21,11 +22,13 @@ export class BoardGameComponent implements OnInit, AfterViewInit{
   error: boolean = false;
   success: boolean = false;
   levelValue!: number;
+  modeValue!: string;
   @ViewChild('resultInput') resultInput: ElementRef | undefined;
 
   constructor(
     private store: Store<{ score: number }>,
     public translate: TranslateService,
+    private mode: Store<{ mode: ModeType }>,
     private level: Store<{ level: number }>) {
 
     if (translate.currentLang == 'fr') {
@@ -41,6 +44,20 @@ export class BoardGameComponent implements OnInit, AfterViewInit{
   }
 
   ngOnInit(): void {
+    this.mode.select('mode').subscribe({
+      next: (mode) => {
+        switch (mode) {
+          case 'addition':
+            this.modeValue = '+';
+            break;
+          case 'subtraction':
+            this.modeValue = '-';
+            break
+        }
+        this.generateNumbers();
+      }
+    });
+
     // Generate random numbers.
     this.generateNumbers();
 
@@ -63,7 +80,6 @@ export class BoardGameComponent implements OnInit, AfterViewInit{
    * Generate random numbers,
    */
   generateNumbers(): void {
-
     let limit: number = 5;
 
     if (this.levelValue === 2) {
@@ -72,8 +88,19 @@ export class BoardGameComponent implements OnInit, AfterViewInit{
       limit = 20;
     }
 
-    this.firstNumber = Math.floor(Math.random() * limit) + 1;
-    this.secondNumber = Math.floor(Math.random() * limit) + 1;
+    // Generate numbers based on the mode
+    if (this.modeValue === '-') {
+      // Ensure firstNumber is greater than secondNumber for subtraction
+      do {
+        this.firstNumber = Math.floor(Math.random() * limit) + 1;
+        this.secondNumber = Math.floor(Math.random() * limit) + 1;
+      } while (this.firstNumber <= this.secondNumber);
+    } else {
+      // For addition or other modes, generate numbers normally
+      this.firstNumber = Math.floor(Math.random() * limit) + 1;
+      this.secondNumber = Math.floor(Math.random() * limit) + 1;
+    }
+
     this.result = null;
   }
 
@@ -86,18 +113,26 @@ export class BoardGameComponent implements OnInit, AfterViewInit{
    * If yes, generate new numbers.
    */
   checkResult(): void {
-
-    // check if the result is a number.
+    // Check if the result is an integer.
     if (this.result && !Number.isInteger(this.result)) {
       this.result = undefined;
       return;
     }
 
+    // Determine the expected result based on the operation mode.
+    let expectedResult: number;
+    if (this.modeValue === '+') {
+      expectedResult = this.firstNumber + this.secondNumber;
+    } else if (this.modeValue === '-') {
+      expectedResult = this.firstNumber - this.secondNumber;
+    } else {
+      // If the mode is not recognized, exit the function.
+      return;
+    }
+
     // Check if the result is correct.
-    if (this.result && (this.result.toString().length == ((this.firstNumber + this.secondNumber).toString().length))) {
-
-      if (this.result == this.firstNumber + this.secondNumber) {
-
+    if (this.result && (this.result.toString().length == expectedResult.toString().length)) {
+      if (this.result === expectedResult) {
         this.error = false;
         this.success = true;
         this.score++;

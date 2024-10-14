@@ -23,4 +23,10 @@
       </div>
     </div>
   </div>
+
+  <div class="bloc mode flex" style="align-items: center; justify-content: center;" >
+    <div (click)="changeMode()" style="min-width: 80px">
+      <div style="font-size: 50px">{{ modeValue === 'addition' ? '+' : '-' }}</div>
+    </div>
+  </div>
 </div>
